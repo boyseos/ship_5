@@ -18,10 +18,6 @@ brd = (()=>{
 		$('<h1>', {text : '글이 없나?'})
 		.addClass('media text-muted pt-3')
 		.appendTo('#recent_update')
-//			$('#recent_board2').html
-//			('<h1>',{text : '글이 없나?'}).addClass('media text-muted pt-3')
-//			$('#recent_board3').html
-//			('<h1>',{text : '글이 없나?'}).addClass('media text-muted pt-3')
 	}
 	let write = x =>{
 		$('#recent_update').html(brd_vue.brd_write(x))

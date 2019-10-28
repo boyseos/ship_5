@@ -2,7 +2,7 @@
 var auth = auth || {}
 auth =(()=>{
 	let _, js,auth_vue_js, brd_js
-	let init =()=>{
+	let init = ()=>{
 		_ = $.ctx()
 		js = $.js()
 		auth_vue_js = js+'/vue/auth_vue.js'
@@ -59,15 +59,8 @@ auth =(()=>{
 							$.getScript(router_js,$.extend(new User(d.uid))),
 							$.getScript(brd_js)
 						)
-						.done(brd.onCreate())
-						.fail(alert('왜 실패?'))
-						
-//						$.getScript(router_js,
-//							()=>{$.extend(new User(d.age))
-//								$.getScript(brd_js).done(()=>{
-//									brd.onCreate()
-//								})
-//							})						
+						.done(()=> brd.onCreate())
+						.fail(()=> alert('왜 실패?'))
 					},
 					error : e => {
 						alert('로그인 ajax 실패')
@@ -106,11 +99,11 @@ auth =(()=>{
 						//{ uId : $('#uid').val ,uPw : $('#upw)}이 원형태
 					contentType : 'application/json',      //meam
 					success : d => {
-						alert('ajax 조인 성공아이디 : '+ d.uid)
+						console.log('조인'+d.uid)
 						setContentView()
 					},
 					error : e => {
-						alert('조인 ajax 실패..!!!!!!!!!!')
+						colsole.log('조인실패')
 					}
 				})
 			}
@@ -120,29 +113,18 @@ auth =(()=>{
 	}
 	
 	let existid = x =>{
-//		$('<button>',{
-//			text : '중복가입 체크',
-//			href : '#',
-//			type : 'submit',
-//			click : e =>{
-//				e.preventDefault();
-//				alert('중복체크 해보자')
-				$.ajax({
-					url : _+'/users/'+$('#uid').val()+'/exist',
-					// type : 'GET', default 지워도 된다.
-					contentType : 'application/json',      //meam
-					success : d => {
-						if(d.boolean === 'FALSE') $('#dupl_check').val('사용가능한 ID입니다').css('color','blue')
-						else $('#dupl_check').val('쓰고있는 ID입니다').css('color','red')
-					},
-					error : e => {
-						alert('중복체크 ajax 실패..!!!!!!!!!!')
-					}
-				})
-//			}
-//		})
-//		.addClass('btn btn-secondary')
-//		.appendTo('#existId')
+		$.ajax({
+			url : _+'/users/'+$('#uid').val()+'/exist',
+			// type : 'GET', default 지워도 된다.
+			contentType : 'application/json',      //meam
+			success : d => {
+				if(d.boolean === 'FALSE') $('#dupl_check').val('사용가능한 ID입니다').css('color','blue')
+				else $('#dupl_check').val('쓰고있는 ID입니다').css('color','red')
+			},
+			error : e => {
+				alert('중복체크 ajax 실패..!!!!!!!!!!')
+			}
+		})
 	}
 	return {onCreate};
 })();
