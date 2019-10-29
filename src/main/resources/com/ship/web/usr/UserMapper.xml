@@ -26,7 +26,7 @@
         <result column="FUT_BLACK" property="lolname"/>
     </resultMap> -->
     <select id="selectUserByIdPw" resultType="User">
-        select USER_ID as uid, USER_NAME as uname, USER_PW as upw, AGE as age 
+        select USER_ID uid, USER_NAME uname, USER_PW upw, AGE
         from USER
         where USER_ID like #{uid}
     </select>

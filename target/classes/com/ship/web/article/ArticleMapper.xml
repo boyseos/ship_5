@@ -8,4 +8,27 @@
         insert into ARTICLE (ARTSEQ, TITLE, USER_ID, CONTENT)
         VALUES (#{artseq}, #{title}, #{uid}, #{content})
     </insert>
+    <select id="countUserArticle" resultType="int">
+        select count(USER_ID)
+        from ARTICLE
+        where USER_ID like #{uid}
+    </select>
+    <select id="userArticleList" resultType="Article">
+        select ARTSEQ, TITLE, CONTENT, USER_ID as uid
+        from ARTICLE
+        where USER_ID like #{uid}
+    </select>
+    <select id="selectAll" resultType="Article">
+        select a.USER_ID as uid, a.*
+        from ARTICLE a
+    </select>
+    <update id="update" parameterType="Article">
+        UPDATE ARTICLE
+        SET TITLE = #{title}, CONTENT = #{content} 
+        WHERE ARTSEQ = #{artseq}
+    </update>
+    <delete id="delete" parameterType="Article">
+        DELETE FROM ARTICLE
+		WHERE ARTSEQ = #{artseq}
+    </delete>
 </mapper>
