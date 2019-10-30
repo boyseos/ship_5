@@ -1,8 +1,8 @@
 "use strict"
-var brd_vue = brd_vue || {}
-brd_vue = (()=>{
+var service_vue = service_vue || {}
+service_vue = (()=>{
 	return {
-		brd_head : ()=> {
+		service_head : ()=> {
 			return '<head>'+
 			'    <meta charset="utf-8">'+
 		    '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">'+
@@ -18,7 +18,7 @@ brd_vue = (()=>{
 		'    <link href="https://getbootstrap.com/docs/4.0/examples/offcanvas/offcanvas.css" rel="stylesheet">'+
 		'  </head>'
 		},
-		brd_body : () => {
+		service_body : () => {
 			return  '<body class="bg-light">'+
 	
 			/*'    <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">'+
@@ -159,7 +159,7 @@ brd_vue = (()=>{
 	
 			'+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" preserveAspectRatio="none" style="display: none; visibility: hidden; position: absolute; top: -100%; left: -100%;"><defs><style type="text/css"></style></defs><text x="0" y="2" style="font-weight:bold;font-size:2pt;font-family:Arial, Helvetica, Open Sans, sans-serif">32x32</text></svg></body>'
 		},
-		brd_write: x =>{
+		service_write: x =>{
 			  return '<div class="container-fluid" style="width:80%">'
 			  +'<h1>ARTICLE WRITING</h1>'
 			  +'<form id="write_con">' //$('#write_con input[name=writer]')      #아이디, .class 스페이스로 인해 루트밑 객체들을 자동 노드처리해버린다.

@@ -1,27 +1,44 @@
 "use strict"
-var brd = brd || {}
-brd = (() =>{
-	let _, js, brd_vue_js, uid, authjs, $form, $navi,navi_vue_js
-	let init = z =>{
-		_ = '/web'
-		js = z
-		uid = $.uid()
-		brd_vue_js = js + '/vue/brd_vue.js'
-		navi_vue_js = js+ '/vue/navi_vue.js'
-		authjs = js+'/cmm/auth.js'
-		$form = 'form'
-		$navi = js + '/cmm/navi.js'
-		}
+var service = service || {}
+service = (() =>{
+	let _, img, css, js, auth_js, auth_vue_js, service_js, service_vue_js, navi_js, navi_vue_js, router_js
+	let init = ()=>{
+		_ = $.ctx()
+		img = $.img()
+		css = $.css()
+		js = $.js()
+		auth_js = js + '/cmm/auth.js'
+		auth_vue_js = js + '/vue/auth_vue.js'
+		service_js = js + '/service/service.js'
+		service_vue_js = js + '/vue/service_vue.js'
+		navi_js = js + '/cmm/navi.js'
+		navi_vue_js = js + '/vue/navi_vue.js'
+		router_js = js + '/cmm/router.js'
+	}
 	let setContentView = () =>{
-		console.log('brd 겟스크립트 진입')
+		console.log('service 겟스크립트 진입')
 		//$('#main div[class=my-3 p-3 bg-white rounded box-shadow]').remove()
 		recent_update()
 	}
+	
+	let onCreate = x =>{
+		init()
+		$.when(
+			$.getScript(service_vue_js)
+		).done(()=>{
+			setContentView()
+			$('#form_join').remove()
+		}).fail(()=>{
+			
+		})
+	}
+	
 	let recent_update = () => {
-		$('head').html(brd_vue.brd_head)
-		$('body').html(brd_vue.brd_body).append(navi_vue.navi)
+		$('head').html(service_vue.service_head)
+		$('body').append(service_vue.service_body)
 		$('#recent_update .media').remove()
-		$.getJSON(_+'/articles/list',d =>{
+		alert('_ = '+_+'        $.ctx() = '+ $.ctx())
+		$.getJSON($.ctx()+'/articles/list',d =>{
 			let res = ''
 			$.each(d, (i,j)=>{
 				$('<div class="media text-muted pt-3">'+
@@ -59,7 +76,7 @@ brd = (() =>{
 	}
 	
 	let write = x =>{
-		$('#recent_update').html(brd_vue.brd_write(x))
+		$('#recent_update').html(service_vue.service_write(x))
 		$('#write_con textarea').val(uid)
 		$('#write_con input[name="title"]').val('임시타이틀')
 		$('<button>',{
@@ -71,7 +88,6 @@ brd = (() =>{
 		.appendTo('#write_con')
 		.click(e=>{
 			e.preventDefault();
-			alert(_)
 			let json = {
 					uid : $('#write_con input[name=writer]').val(),
 					title : $('#write_con input[name=title]').val(),
@@ -100,29 +116,14 @@ brd = (() =>{
 		.addClass('btn btn-danger')
 		.appendTo('#write_con')
 		.click(()=>{
-
 		})
 	}
 	/*+' <input type="reset"  value="CANCEL"/>'
 	  +'<input name="write" type="submit" value="SUBMIT"/>'*/
-	let onCreate = x =>{
-		init(x)
-		$.when(
-				$.getScript(brd_vue_js).done(()=>{
-				$.getScript(navi_vue_js)
-				$.getScript($navi)
-			})
-		).done(()=>{
-			setContentView()
-			navi.onCreate(x)
-		}).fail(()=>{
-			
-		})
-		
-	}
+	
 
 	let detail = x => {
-		$('#recent_update').html(brd_vue.brd_write(x))
+		$('#recent_update').html(service_vue.service_write(x))
 		$('#write_con input[name="writer"]').val(x.uid)
 		$('#write_con textarea').val(x.content)
 		$('#write_con input[name="title"]').val(x.title)

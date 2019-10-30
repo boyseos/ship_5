@@ -2,8 +2,8 @@
 var app = app || {};
 app = (()=>{
 	const WHEN_ERR = '호출하는 JS 파일을 찾지 못했.... 이것만 에러가 나오나?.';
-	let _, js, authjs;
-	let run = x =>$.getScript(x+'/resources/js/cmm/router.js',
+	let _, js, navijs;
+	var run = x =>$.getScript(x+'/resources/js/cmm/router.js',
 			()=>{$.extend(new Session(x))
 				onCreate();
 	}
@@ -11,15 +11,15 @@ app = (()=>{
 	let init =()=>{
 		_ = $.ctx();
 		js = $.js();
-		authjs = js+'/cmm/auth.js';
+		navijs = js+'/cmm/navi.js';
 	}
 	let onCreate = ()=>{
 		init();
 		$.when(
-			$.getScript(authjs)
+			$.getScript(navijs)
 		)
 		.done(()=>{
-			auth.onCreate()
+			navi.onCreate()
 			}
 		)
 		.fail(()=>{

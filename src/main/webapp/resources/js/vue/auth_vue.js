@@ -37,7 +37,7 @@ auth_vue = (()=>{
 		      '}'+
 		    '</style>'+
 				'<link href="https://getbootstrap.com/docs/4.3/examples/checkout/form-validation.css" rel="stylesheet">'+
-				'<div class="container">'+
+		'<div id="join_page" class="container" style="padding-top: 700px">'+
 		'  <div class="py-5 text-center">'+
 		'    <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">'+
 		'    <h2>Checkout form</h2>' +

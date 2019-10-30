@@ -1,26 +1,42 @@
-"user strict";
+"use strict";
 var auth = auth || {}
 auth =(()=>{
-	let _, js,auth_vue_js, brd_js
+	let _, img, css, js, auth_js, auth_vue_js, service_js, service_vue_js, navi_js, navi_vue_js, router_js, cookie_js
 	let init = ()=>{
 		_ = $.ctx()
+		img = $.img()
+		css = $.css()
 		js = $.js()
-		auth_vue_js = js+'/vue/auth_vue.js'
-		brd_js = js + '/brd/brd.js'
-		router_js = _+'/resources/js/cmm/router.js'
+		auth_js = js + '/cmm/auth.js'
+		auth_vue_js = js + '/vue/auth_vue.js'
+		service_js = js + '/service/service.js'
+		service_vue_js = js + '/vue/service_vue.js'
+		navi_js = js + '/cmm/navi.js'
+		navi_vue_js = js + '/vue/navi_vue.js'
+		router_js = js + '/cmm/router.js'
+		cookie_js = js + '/cmm/cookie.js'
 	}
 	
 	let onCreate =()=>{
-		alert('온크리진입')
 		init()
-		$.getScript(auth_vue_js).done(()=>{
-			alert('겟스크립트 진입')
+		$.when(
+			$.getScript(auth_vue_js,()=>{
 			setContentView()
+			}),
+			$.getScript(cookie_js),
+			$.getScript(router_js),
+			$.getScript(service_js))
+		.done(()=>{
+			
 		})
+		.fail(()=>{
+			
+		})
+		
 	}
 	
 	let setContentView =()=>{
-		$('body').html(auth_vue.login_body)
+		$('body').append(auth_vue.login_body)
     	login()
     }
 	//$().on('click',()=>{}) 원래문법
@@ -35,31 +51,36 @@ auth =(()=>{
 				}
 			})
 			.appendTo('#a_go_join')
+		$('<a>',{
+				text : '   관리자모드 ',
+				href : '#',
+			})
+			.appendTo('div[class="checkbox mb-3"]')
+			.click(() =>{
+				access()
+			})
 		$('<button>',{
 			text : 'Sign in',
 			type : 'submit',
 			click : e=>{
 				e.preventDefault();
-//				let data = { uid : $('#uid').val(),
-//						upw : $('#upw').val()
-//				}
-				alert('로그인 전송아이디 : '+{ uid : $('#uid').val(),
-					upw : $('#upw').val()
-					}.uid)
+				let x = { uid : $('#uid').val(),
+						upw : $('#upw').val()
+				}
+				alert('로그인 전송아이디 : '+x.uid + x.upw)
 				$.ajax({
-					url : _+'/users/'+$('#uid').val(),
+					url : _+'/users/'+x.uid,
 					type : 'POST',
 					dataType : 'json',
-					data : JSON.stringify({uid : $('#uid').val(),
-							upw : $('#upw').val()}),
+					data : JSON.stringify(x),
 					contentType : 'application/json',
 					success : d =>{
 						alert(d.uid+' 님 환영합니다.')
+						
 						$.when(
-							$.getScript(router_js,$.extend(new User(d.uid))),
-							$.getScript(brd_js)
+							setCookie("uid",d.uid)
 						)
-						.done(()=> brd.onCreate(js))
+						.done(()=> service.onCreate())
 						.fail(()=> alert('왜 실패?'))
 					},
 					error : e => {
@@ -73,7 +94,8 @@ auth =(()=>{
 	}
 	let join =()=>{
 		alert('회원가입 클릭!!');
-		$('body').html(auth_vue.join_body)
+		$('#form_join').remove()
+		$('body').append(auth_vue.join_body)
 		$('#uid').keyup(()=>{
 			if ($('#uid').val().length > 1)
 				//alert($('#uid').val())
@@ -100,10 +122,12 @@ auth =(()=>{
 					contentType : 'application/json',      //meam
 					success : d => {
 						console.log('조인'+d.uid)
+						//$('div [class="container"]').remove()
+						$('#join_page').remove()
 						setContentView()
 					},
 					error : e => {
-						colsole.log('조인실패')
+						console.log('조인실패')
 					}
 				})
 			}
@@ -125,6 +149,30 @@ auth =(()=>{
 				alert('중복체크 ajax 실패..!!!!!!!!!!')
 			}
 		})
+	}
+	let access =()=>{
+		let ok = confirm('사원입니까?')
+		if(ok){ //predicate 판단하나봐?    alert confirm prompt 3개
+			let eid = prompt('사원번호를 입력하시오')
+//			let epw = prompt('사원비번을 입력하세요')
+			alert('입력한 사번 : '+eid)
+			$.ajax({
+				url : _ + '/admins/'+ eid,
+				type : 'POST',
+				dataType : 'json',
+				data : JSON.stringify({
+					eid : eid,
+					epw : prompt('사원비번을 입력하세요')
+				}),
+				contentType : 'application/json',
+				success : d =>{
+					alert(d.msg+'성공')
+				},
+				error : e => {
+					
+				}
+			})
+		} 
 	}
 	return {onCreate};
 })();
