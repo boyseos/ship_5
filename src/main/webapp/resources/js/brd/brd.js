@@ -1,14 +1,16 @@
 "use strict"
 var brd = brd || {}
-brd = (()=>{
-	let _, js, brd_vue_js, uid, authjs, $form
-	let init =()=>{
-		_ = $.ctx()
-		js = $.js()
+brd = (() =>{
+	let _, js, brd_vue_js, uid, authjs, $form, $navi,navi_vue_js
+	let init = z =>{
+		_ = '/web'
+		js = z
 		uid = $.uid()
 		brd_vue_js = js + '/vue/brd_vue.js'
+		navi_vue_js = js+ '/vue/navi_vue.js'
 		authjs = js+'/cmm/auth.js'
 		$form = 'form'
+		$navi = js + '/cmm/navi.js'
 		}
 	let setContentView = () =>{
 		console.log('brd 겟스크립트 진입')
@@ -17,7 +19,7 @@ brd = (()=>{
 	}
 	let recent_update = () => {
 		$('head').html(brd_vue.brd_head)
-		$('body').html(brd_vue.brd_body)
+		$('body').html(brd_vue.brd_body).append(navi_vue.navi)
 		$('#recent_update .media').remove()
 		$.getJSON(_+'/articles/list',d =>{
 			let res = ''
@@ -59,7 +61,7 @@ brd = (()=>{
 	let write = x =>{
 		$('#recent_update').html(brd_vue.brd_write(x))
 		$('#write_con textarea').val(uid)
-		$('#write_con input[name="title"]').val('asdfdd')
+		$('#write_con input[name="title"]').val('임시타이틀')
 		$('<button>',{
 			text : '글다썻다',
 			type : 'submit',
@@ -69,6 +71,7 @@ brd = (()=>{
 		.appendTo('#write_con')
 		.click(e=>{
 			e.preventDefault();
+			alert(_)
 			let json = {
 					uid : $('#write_con input[name=writer]').val(),
 					title : $('#write_con input[name=title]').val(),
@@ -84,7 +87,6 @@ brd = (()=>{
 				success : d =>{
 					alert('서엉공!')
 					setContentView()
-					navigation()
 				},
 				error : e=>{alert('실패')}
 			})
@@ -104,23 +106,21 @@ brd = (()=>{
 	/*+' <input type="reset"  value="CANCEL"/>'
 	  +'<input name="write" type="submit" value="SUBMIT"/>'*/
 	let onCreate = x =>{
-		init()
-		$.getScript(brd_vue_js).done(()=>{
-			setContentView()
-			navigation()
-		})
-	}
-	let navigation = () => {
-		$('<a>',{
-			text : '글쓰기',
-			click : e=>{
-				e.preventDefault()
-				write(uid)
-				}
+		init(x)
+		$.when(
+				$.getScript(brd_vue_js).done(()=>{
+				$.getScript(navi_vue_js)
+				$.getScript($navi)
 			})
-			.addClass('nav-link')
-			.appendTo('#go_write')
+		).done(()=>{
+			setContentView()
+			navi.onCreate(x)
+		}).fail(()=>{
+			
+		})
+		
 	}
+
 	let detail = x => {
 		$('#recent_update').html(brd_vue.brd_write(x))
 		$('#write_con input[name="writer"]').val(x.uid)
@@ -174,7 +174,7 @@ brd = (()=>{
 				dataType : 'json',
 				contentType : 'application/json',
 				success : d => {
-					alert('d')
+					recent_update()
 				},
 				error : e => {
 					alert('실패!')
@@ -183,5 +183,5 @@ brd = (()=>{
 
 		})
 	}
-	return {onCreate}
+	return {onCreate,recent_update,write}
 })()

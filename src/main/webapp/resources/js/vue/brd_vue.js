@@ -21,7 +21,7 @@ brd_vue = (()=>{
 		brd_body : () => {
 			return  '<body class="bg-light">'+
 	
-			'    <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">'+
+			/*'    <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">'+
 			'      <a class="navbar-brand" href="#"> '+
 			'		<i class="fab fa-accusoft fa-3x">xy</i>'+
 			'      <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">'+
@@ -54,7 +54,7 @@ brd_vue = (()=>{
 			'          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>'+
 			'        </form>'+
 			'      </div>'+
-			'    </nav>'+
+			'    </nav>'+*/
 	
 			'    <div class="nav-scroller bg-white box-shadow">'+
 			'      <nav class="nav nav-underline">'+

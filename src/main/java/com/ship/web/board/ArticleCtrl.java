@@ -52,7 +52,9 @@ public class ArticleCtrl {
 		list.clear();
 		ISupplier<List<Article>> g = () -> articleMapper.selectAll();
 		list = g.get();
-		for(Article x : list) logger.info("글찾기 = {}", x);
+		String result = ""; 
+		for(Article x : list) result += "글찾기 = "+ x.toString() +"\n";
+		logger.info(result);
 		return list;
 	}
 	

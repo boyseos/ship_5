@@ -59,7 +59,7 @@ auth =(()=>{
 							$.getScript(router_js,$.extend(new User(d.uid))),
 							$.getScript(brd_js)
 						)
-						.done(()=> brd.onCreate())
+						.done(()=> brd.onCreate(js))
 						.fail(()=> alert('왜 실패?'))
 					},
 					error : e => {
