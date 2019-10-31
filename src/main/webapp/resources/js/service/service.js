@@ -1,7 +1,7 @@
 "use strict"
 var service = service || {}
 service = (() =>{
-	let _, img, css, js, auth_js, auth_vue_js, service_js, service_vue_js, navi_js, navi_vue_js, router_js
+	let _, img, css, js, auth_js, auth_vue_js, service_js, service_vue_js, navi_js, navi_vue_js, router_js, admin_js
 	let init = ()=>{
 		_ = $.ctx()
 		img = $.img()
@@ -14,6 +14,7 @@ service = (() =>{
 		navi_js = js + '/cmm/navi.js'
 		navi_vue_js = js + '/vue/navi_vue.js'
 		router_js = js + '/cmm/router.js'
+		admin_js = js + '/adm/admin.js'
 	}
 	let setContentView = () =>{
 		console.log('service 겟스크립트 진입')
@@ -24,7 +25,8 @@ service = (() =>{
 	let onCreate = x =>{
 		init()
 		$.when(
-			$.getScript(service_vue_js)
+			$.getScript(service_vue_js),
+			$.getScript(admin_js)
 		).done(()=>{
 			setContentView()
 			$('#form_join').remove()
@@ -35,10 +37,12 @@ service = (() =>{
 	
 	let recent_update = () => {
 		$('head').html(service_vue.service_head)
+		//$('body div[class=nav-scroller bg-white box-shadow]').remove()
+		$('#main').remove()
 		$('body').append(service_vue.service_body)
 		$('#recent_update .media').remove()
-		alert('_ = '+_+'        $.ctx() = '+ $.ctx())
-		$.getJSON($.ctx()+'/articles/list',d =>{
+		alert('_ = '+_)
+		$.getJSON(_+'/articles/list',d =>{
 			let res = ''
 			$.each(d, (i,j)=>{
 				$('<div class="media text-muted pt-3">'+
@@ -77,7 +81,7 @@ service = (() =>{
 	
 	let write = x =>{
 		$('#recent_update').html(service_vue.service_write(x))
-		$('#write_con textarea').val(uid)
+		$('#write_con textarea').val(getCookie('uid'))
 		$('#write_con input[name="title"]').val('임시타이틀')
 		$('<button>',{
 			text : '글다썻다',

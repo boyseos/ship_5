@@ -34,8 +34,7 @@ public class AdminCtrl {
 	
 	@PostMapping("/{eid}")
 	public Map<?,?> access(@PathVariable String eid, @RequestBody Admin param){
-		logger.info("관리자 로그인 : {}",admin);
-		
+		logger.info("관리자 로그인 : {}",param);
 		IFunction<Admin, Admin> f = x -> adminMapper.searchAdminByIdPw(param);
 		map.clear();
 		map.put("msg", (f.apply(param) != null) ? "Success" : "Fail");
@@ -44,19 +43,19 @@ public class AdminCtrl {
 	
 	@GetMapping("/list")
 	public Map<?,?> eList(){
-		logger.info("관리자 목록 : {}",admin);
+		logger.info("관리자 목록 : {}","sdf");
 		return null;
 	}
 	
 	@PutMapping("/{eid}")
-	public Map<?,?> eUpdate(@PathVariable String eid, @RequestBody Admin admin){
-		logger.info("관리자 수정 : {}",admin);
+	public Map<?,?> eUpdate(@PathVariable String eid, @RequestBody Admin param){
+		logger.info("관리자 수정 : {}",param);
 		return null;
 	}
 	
 	@DeleteMapping("/{eid}")
-	public Map<?,?> eDelete(@PathVariable String eid, @RequestBody Admin admin){
-		logger.info("관리자 삭제 : {}",admin);
+	public Map<?,?> eDelete(@PathVariable String eid, @RequestBody Admin param){
+		logger.info("관리자 삭제 : {}",param);
 		return null;
 	}
 }

@@ -151,10 +151,9 @@ auth =(()=>{
 		})
 	}
 	let access =()=>{
-		let ok = confirm('사원입니까?')
+/*		let ok = confirm('사원입니까?')
 		if(ok){ //predicate 판단하나봐?    alert confirm prompt 3개
 			let eid = prompt('사원번호를 입력하시오')
-//			let epw = prompt('사원비번을 입력하세요')
 			alert('입력한 사번 : '+eid)
 			$.ajax({
 				url : _ + '/admins/'+ eid,
@@ -166,13 +165,14 @@ auth =(()=>{
 				}),
 				contentType : 'application/json',
 				success : d =>{
-					alert(d.msg+'성공')
+					admin.onCreate(d)
 				},
 				error : e => {
 					
 				}
 			})
-		} 
+		} */
+		admin.onCreate('x')
 	}
 	return {onCreate};
 })();

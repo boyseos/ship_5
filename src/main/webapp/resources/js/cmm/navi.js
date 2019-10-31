@@ -42,24 +42,24 @@ navi =(()=>{
 	}
 	
 	let loginMenu = () =>{
-		if(getCookie('uid') !== 'null'){
-			$('<a>',{
-				text : '글쓰기',
-				ref : '#'
-			})
-			.addClass('nav-link')
-			.appendTo('#navbarsExampleDefault')
-			.click(()=>{
-				service.write(getCookie('uid'))
-			})
+		$('<a>',{
+			text : '글쓰기',
+			ref : '#'
+		})
+		.addClass('nav-link active')
+		.prependTo('body nav[class="navbar navbar-expand-md fixed-top navbar-dark bg-dark"]')
+		.click(()=>{
+			service.write(getCookie('uid'))
+		})
+		if(getCookie('uid') !== null){
 			$('<a>',{
 				text : getCookie('uid')+' 로그아웃',
 				ref : '#'
 			})
-			.addClass('nav-link')
-			.appendTo('#navbarsExampleDefault')
+			.addClass('nav-link active')
+			.prependTo('body nav[class="navbar navbar-expand-md fixed-top navbar-dark bg-dark"]')
 			.click(()=>{
-				deleteCookie()
+				deleteCookie('uid')
 				app.r(_)
 			})
 		}
