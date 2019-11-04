@@ -9,9 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @MapperScan(basePackages = {"com.ship.web"})
+//@EnableAspectJAutoProxy
+//@EnableTransactionManagement
 public class MybatisContext {
 	@Autowired ApplicationContext applicationContext;
 	
@@ -28,4 +33,9 @@ public class MybatisContext {
     public SqlSessionTemplate sqlSession(SqlSessionFactory sqlSessionFactory) {
       return new SqlSessionTemplate(sqlSessionFactory);
     }
+    
+    /*@Bean
+    public DataSourceTransactionManager txManager() {
+    	return new DataSourceTransactionManager(dataSource());
+    }*/
 }

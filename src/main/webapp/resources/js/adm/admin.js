@@ -1,6 +1,6 @@
 var admin = admin || {}
 var admin = (()=>{
-	let _, img, css, js, auth_js, auth_vue_js, service_js, service_vue_js, navi_js, navi_vue_js, router_js
+	let _, img, css, js, auth_js, auth_vue_js, service_js, service_vue_js, navi_js, navi_vue_js, router_js, proto_js
 	let init = ()=>{
 		_ = $.ctx()
 		img = $.img()
@@ -13,10 +13,12 @@ var admin = (()=>{
 		navi_js = js + '/cmm/navi.js'
 		navi_vue_js = js + '/vue/navi_vue.js'
 		router_js = js + '/cmm/router.js'
+		proto_js = js + '/cmm/proto.js'
 	}
 	let onCreate = (x =>{
 		alert(x.msg+'성공')
 		init()
+		$.getScript(proto_js)
 		setContentView()
 	})
 	let setContentView = ()=>{
@@ -62,22 +64,32 @@ var admin = (()=>{
 	
 	let webCrawl = () =>{
 		$('#right').empty()
-		$('<form style="margin: auto;"><select name="cars" size="1" style="width: 300px;"></select><input type="submit"></form>'+
-			'<input type="text" placeholder="Search" aria-label="Search" style="width: 300px; text-align: center;">')
+		$('<form action= "'+_+'/service/" style="margin: auto;"><select name="site" size="1" style="width: 300px;"></select>'+
+			'<br></br><input type="search" placeholder="Search" aria-label="Search" style="width: 300px; text-align: center;">'+
+			'<br></br></form><text style="width: 700px; height: 450px; text-align: center;"></text>')
 		.appendTo('#right')
-		let array = [	{txt: '볼보', name: "volvo"},
-						{txt: '사브', name: "saab"},
-						{txt: '피아트', name: "fiat"},
-						{txt: '아우디', name: "audi"},
-						{txt: '현대', name: "hyundai"}
+		let array = [	{value: 'https://naver.com/', name: "네이버"},
+						{value: 'https://www.google.com/', name: "구글"},
+						{value: '피아트', name: "fiat"},
+						{value: '아우디', name: "audi"},
+						{value: '현대', name: "hyundai"}
 					]
 		$.each(array,(i,j)=>{
-			$('<option name="'+j.name+'">'+j.txt+'</option>')
+			$('<option value="'+j.value+'">'+j.name+'</option>')
 			.css({border : '1px solid #000000'})
-			.appendTo('form select[name=cars]')
-			.click(e=>{
-				e.preventDefault()
-			})
+			.appendTo('form select[name=site]')
+		})
+		$('<input type="submit">').appendTo('#right form[action="/web/service/"]')
+		.click( e =>{
+			e.preventDefault()
+			if(!$.fn.nC([$('form input[type=search]').val(),
+				$('form select[name=site]').val()])){
+				$.getJSON(_+'/service/search'+$('form input[type=search]').val()+'/site'+
+					$('form select[name=site]').val(), d =>{
+					$('text').html(d)
+				}
+			)}
+			else alert('뭔가없다.')
 		})
 	}
 	return{onCreate}

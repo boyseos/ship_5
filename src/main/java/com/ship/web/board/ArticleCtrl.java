@@ -25,7 +25,7 @@ public class ArticleCtrl {
 	@Autowired Map<String, Object> map;
 	@Autowired Article art;
 	@Autowired ArticleMapper articleMapper;
-	@Autowired List<Article> list;
+	@Autowired List<Article> articleList;
 	
 	@PostMapping("/")
 	public Map<?,?> write(@RequestBody Article param) {
@@ -49,13 +49,13 @@ public class ArticleCtrl {
 	
 	@GetMapping("/list")//패스배러블 설정을 해주면 바뀔수 있는 부분이라는 뜻이다.
 	public List<Article> allBoardList(){
-		list.clear();
+		articleList.clear();
 		ISupplier<List<Article>> g = () -> articleMapper.selectAll();
-		list = g.get();
+		articleList = g.get();
 		String result = ""; 
-		for(Article x : list) result += "글찾기 = "+ x.toString() +"\n";
+		for(Article x : articleList) result += "글찾기 = "+ x.toString() +"\n";
 		logger.info(result);
-		return list;
+		return articleList;
 	}
 	
 	@GetMapping("/{uid}/count")//패스배러블 설정을 해주면 바뀔수 있는 부분이라는 뜻이다.

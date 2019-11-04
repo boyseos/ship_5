@@ -28,7 +28,7 @@ public class UserCtrl {
 	@Autowired User user;
 	@Autowired Printer printer;
 	@Autowired UserMapper userMapper;
-	@Autowired Map<String, Object>map;
+	@Autowired Map<String, Object> map;
 	
 	@PostMapping("/")
 	public Map<?,?> join(@RequestBody User user) {

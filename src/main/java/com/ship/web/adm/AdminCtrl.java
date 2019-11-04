@@ -35,8 +35,11 @@ public class AdminCtrl {
 	@PostMapping("/{eid}")
 	public Map<?,?> access(@PathVariable String eid, @RequestBody Admin param){
 		logger.info("관리자 로그인 : {}",param);
-		IFunction<Admin, Admin> f = x -> adminMapper.searchAdminByIdPw(param);
+		//IFunction<Admin, Admin> f = x -> adminMapper.searchAdminByIdPw(param);
 		map.clear();
+		map.put("eid", "eid");
+		map.put("epw", "epw");
+		IFunction<Admin, Admin> f = x -> adminMapper.searchAdminByIdPw(param);
 		map.put("msg", (f.apply(param) != null) ? "Success" : "Fail");
 		return map;
 	}
