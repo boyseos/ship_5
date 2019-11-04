@@ -1,7 +1,8 @@
 "use strict";
 var auth = auth || {}
 auth =(()=>{
-	let _, img, css, js, auth_js, auth_vue_js, service_js, service_vue_js, navi_js, navi_vue_js, router_js, cookie_js
+	let _, img, css, js, auth_js, auth_vue_js, service_js, service_vue_js
+	, navi_js, navi_vue_js, router_js, cookie_js, page_vue_js
 	let init = ()=>{
 		_ = $.ctx()
 		img = $.img()
@@ -15,6 +16,7 @@ auth =(()=>{
 		navi_vue_js = js + '/vue/navi_vue.js'
 		router_js = js + '/cmm/router.js'
 		cookie_js = js + '/cmm/cookie.js'
+		page_vue_js = js + '/vue/page_vue.js'
 	}
 	
 	let onCreate =()=>{
@@ -25,7 +27,8 @@ auth =(()=>{
 			}),
 			$.getScript(cookie_js),
 			$.getScript(router_js),
-			$.getScript(service_js))
+			$.getScript(service_js),
+			$.getScript(page_vue_js))
 		.done(()=>{
 			
 		})

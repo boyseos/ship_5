@@ -4,6 +4,9 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ship.web.board.ArticleMapper">
+<!-- 	<resultMap type="" id=""></resultMap>
+	<parameterMap type="" id=""></parameterMap> -->
+	
     <insert id="insertArticle" parameterType="Article">
         insert into ARTICLE (ARTSEQ, TITLE, USER_ID, CONTENT)
         VALUES (#{artseq}, #{title}, #{uid}, #{content})
@@ -31,4 +34,10 @@
         DELETE FROM ARTICLE
 		WHERE ARTSEQ = #{artseq}
     </delete>
+    <select id="selectPage" resultType="Article">
+        select * from article p
+		order by 1 desc
+		LIMIT ${page}, ${pagesize}
+    </select>
+    
 </mapper>

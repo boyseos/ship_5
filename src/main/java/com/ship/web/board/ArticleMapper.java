@@ -1,6 +1,7 @@
 package com.ship.web.board;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +15,5 @@ public interface ArticleMapper {
 	public int update(Article param);
 	//public void delete(Article param);
 	public int delete(Article param);
+	public List<Article> selectPage(Map<String, String> x);
 }

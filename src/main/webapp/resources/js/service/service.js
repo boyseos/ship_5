@@ -1,7 +1,8 @@
 "use strict"
 var service = service || {}
 service = (() =>{
-	let _, img, css, js, auth_js, auth_vue_js, service_js, service_vue_js, navi_js, navi_vue_js, router_js, admin_js
+	let _, img, css, js, auth_js, auth_vue_js, service_js, service_vue_js, navi_js
+	, navi_vue_js, router_js, admin_js, page_vue_js
 	let init = ()=>{
 		_ = $.ctx()
 		img = $.img()
@@ -15,18 +16,20 @@ service = (() =>{
 		navi_vue_js = js + '/vue/navi_vue.js'
 		router_js = js + '/cmm/router.js'
 		admin_js = js + '/adm/admin.js'
+		page_vue_js = js + '/vue/page_vue.js'
 	}
 	let setContentView = () =>{
 		console.log('service 겟스크립트 진입')
 		//$('#main div[class=my-3 p-3 bg-white rounded box-shadow]').remove()
-		recent_update()
+		recent_update(5,6)
 	}
 	
 	let onCreate = x =>{
 		init()
 		$.when(
 			$.getScript(service_vue_js),
-			$.getScript(admin_js)
+			$.getScript(admin_js),
+			$.getScript(page_vue_js)
 		).done(()=>{
 			setContentView()
 			$('#form_join').remove()
@@ -35,14 +38,14 @@ service = (() =>{
 		})
 	}
 	
-	let recent_update = () => {
+	let recent_update = (x,y) => {
 		$('head').html(service_vue.service_head)
 		//$('body div[class=nav-scroller bg-white box-shadow]').remove()
 		$('#main').remove()
 		$('body').append(service_vue.service_body)
 		$('#recent_update .media').remove()
 		alert('_ = '+_)
-		$.getJSON(_+'/articles/list',d =>{
+		$.getJSON(_+'/articles/list/'+x+'__'+y,d =>{
 			let res = ''
 			$.each(d, (i,j)=>{
 				$('<div class="media text-muted pt-3">'+
@@ -58,9 +61,24 @@ service = (() =>{
 				$('<a>타이틀 : '+j.title+'</a>').appendTo('#id_'+i)
 				.click(()=>{
 					alert('타이틀클릭')
-				})	
+				})
 			})
-		})
+			$(page_vue.page_nation()).appendTo('#recent_update')
+			/*for(let i=1; i < (d.length/5)+1 ; i++)
+				$('<li class="page-item"><a class="page-link" href="#">'+i+'</a></li>')
+				.appendTo('#pagenation')
+				.click(()=>{
+					alert(i)
+				})
+			$('<li class="page-item"><a class="page-link" href="#">Next</a></li>').appendTo('#pagenation')*/
+			$.each([x,x+1,x+2,x+3,x+4],(i,j)=>{
+				$('<li class="page-item"><a class="page-link" href="#">'+j+'</a></li>')
+				.appendTo('#pagenation')
+				.click(()=>{
+					alert(j)
+				})
+			})
+			$('<li class="page-item"><a class="page-link" href="#">Next</a></li>').appendTo('#pagenation')
 		
 	/*	let title = ''
 		let content = ''
@@ -77,7 +95,9 @@ service = (() =>{
 			error : e => {}
 		})
 		*/
+		})
 	}
+	
 	
 	let write = x =>{
 		$('#recent_update').html(service_vue.service_write(x))

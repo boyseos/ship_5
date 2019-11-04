@@ -1,5 +1,6 @@
 package com.ship.web.board;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,16 +47,17 @@ public class ArticleCtrl {
 		map.put("count", result);
 		return map;
 	}
-	
-	@GetMapping("/list")//패스배러블 설정을 해주면 바뀔수 있는 부분이라는 뜻이다.
-	public List<Article> allBoardList(){
+
+	@GetMapping("/list/{page}__{pagesize}")//패스배러블 설정을 해주면 바뀔수 있는 부분이라는 뜻이다.
+	public List<Article> selectPage(@PathVariable String page,@PathVariable String pagesize){
+		map.clear();
+		Map<String,String> map2 = new HashMap<String, String>();
 		articleList.clear();
-		ISupplier<List<Article>> g = () -> articleMapper.selectAll();
-		articleList = g.get();
-		String result = ""; 
-		for(Article x : articleList) result += "글찾기 = "+ x.toString() +"\n";
-		logger.info(result);
-		return articleList;
+		map2.clear();
+		map2.put("page", page);
+		map2.put("pagesize", pagesize);
+		IFunction<Map<String,String>, List<Article>> f = x -> articleMapper.selectPage(x);
+		return f.apply(map2);
 	}
 	
 	@GetMapping("/{uid}/count")//패스배러블 설정을 해주면 바뀔수 있는 부분이라는 뜻이다.
