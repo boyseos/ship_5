@@ -19,6 +19,7 @@
 <script src="<%=application.getContextPath()%>/resources/js/vue/service_vue.js"></script>
 <script src="<%=application.getContextPath()%>/resources/js/vue/navi_vue.js"></script>
 <script src="<%=application.getContextPath()%>/resources/js/vue/page_vue.js"></script>
+<script src="<%=application.getContextPath()%>/resources/js/vue/compo_vue.js"></script>
 <script src="<%=application.getContextPath()%>/resources/css/signin.css"></script>
 <script src="<%=application.getContextPath()%>/resources/js/adm/admin.js"></script>
 <script src="<%=application.getContextPath()%>/resources/js/cmm/router.js"></script>

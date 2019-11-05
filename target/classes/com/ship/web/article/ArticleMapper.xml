@@ -25,6 +25,10 @@
         select a.USER_ID as uid, a.*
         from ARTICLE a
     </select>
+    <select id="allBoardCount" resultType="int">
+        select count(USER_ID)
+        from ARTICLE
+    </select>
     <update id="update" parameterType="Article">
         UPDATE ARTICLE
         SET TITLE = #{title}, CONTENT = #{content} 
@@ -34,10 +38,11 @@
         DELETE FROM ARTICLE
 		WHERE ARTSEQ = #{artseq}
     </delete>
-    <select id="selectPage" resultType="Article">
-        select * from article p
-		order by 1 desc
-		LIMIT ${page}, ${pagesize}
+    <select id="selectPage" resultType="Article" parameterType="Proxy">
+        select p.USER_ID uid, p.*
+        from article p
+		order by ARTSEQ desc
+		LIMIT ${startRow}, ${pageSize}
     </select>
     
 </mapper>

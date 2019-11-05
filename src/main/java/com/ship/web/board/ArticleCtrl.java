@@ -1,8 +1,10 @@
 package com.ship.web.board;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ship.web.cmm.IConsumer;
 import com.ship.web.cmm.IFunction;
 import com.ship.web.cmm.ISupplier;
+import com.ship.web.pxy.Proxy;
+import com.ship.web.pxy.ProxyMap;
 
 @RestController
 @RequestMapping("/articles")
@@ -27,37 +31,44 @@ public class ArticleCtrl {
 	@Autowired Article art;
 	@Autowired ArticleMapper articleMapper;
 	@Autowired List<Article> articleList;
+	@Autowired Proxy pxy;
+	@Autowired ProxyMap map3;
 	
 	@PostMapping("/")
 	public Map<?,?> write(@RequestBody Article param) {
 		logger.info("글쓰기 내용{}", param);
 		IConsumer<Article> c = x -> articleMapper.insertArticle(param);
 		c.accept(param);
-		map.clear();
-		map.put("msg", "SUCCESS");
+		Supplier<Integer> s = () -> articleMapper.allBoardCount();
+		//map3.accept(Arrays.asList("msg", "count");
+		
 		return map;
 	}
 	
 	@GetMapping("/count")//패스배러블 설정을 해주면 바뀔수 있는 부분이라는 뜻이다.
 	public Map<?,?> allBoardcount(){
-		ISupplier<String> g = () -> articleMapper.allBoardCount();
-		String result = g.get();
+		ISupplier<Integer> g = () -> articleMapper.allBoardCount();
+		String result = String.valueOf(g.get());
 		logger.info("글찾기 = {}", result);
 		map.clear();
 		map.put("count", result);
 		return map;
 	}
 
-	@GetMapping("/list/{page}__{pagesize}")//패스배러블 설정을 해주면 바뀔수 있는 부분이라는 뜻이다.
-	public List<Article> selectPage(@PathVariable String page,@PathVariable String pagesize){
+	@GetMapping("/list/{page}__{pageSize}")//패스배러블 설정을 해주면 바뀔수 있는 부분이라는 뜻이다.
+	public Map<?,?> selectPage(@PathVariable String page,@PathVariable String pageSize){
+		logger.info("페이지네이션 = {}", page + "____"+ pageSize);
 		map.clear();
-		Map<String,String> map2 = new HashMap<String, String>();
-		articleList.clear();
+		pxy.setPageNum(pxy.parseInt(page));
+		pxy.setPageSize(pxy.parseInt(pageSize));
+		pxy.paging();
+		Map<String,Object> map2 = new HashMap<String, Object>();
 		map2.clear();
-		map2.put("page", page);
-		map2.put("pagesize", pagesize);
-		IFunction<Map<String,String>, List<Article>> f = x -> articleMapper.selectPage(x);
-		return f.apply(map2);
+		IFunction<Proxy, List<Article>> f = x -> articleMapper.selectPage(x);
+		map2.put("list", f.apply(pxy));
+		map2.put("pxy", pxy);
+		//map2.put("pageSize", pxy.getPageSize());
+		return map2;
 	}
 	
 	@GetMapping("/{uid}/count")//패스배러블 설정을 해주면 바뀔수 있는 부분이라는 뜻이다.
