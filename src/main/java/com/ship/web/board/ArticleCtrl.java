@@ -59,15 +59,14 @@ public class ArticleCtrl {
 	public Map<?,?> selectPage(@PathVariable String page,@PathVariable String pageSize){
 		logger.info("페이지네이션 = {}", page + "____"+ pageSize);
 		map.clear();
+		IFunction<Proxy, List<Article>> f = x -> articleMapper.selectPage(x);
 		pxy.setPageNum(pxy.parseInt(page));
 		pxy.setPageSize(pxy.parseInt(pageSize));
 		pxy.paging();
+		pxy.setListArr(f.apply(pxy));
 		Map<String,Object> map2 = new HashMap<String, Object>();
 		map2.clear();
-		IFunction<Proxy, List<Article>> f = x -> articleMapper.selectPage(x);
-		map2.put("list", f.apply(pxy));
 		map2.put("pxy", pxy);
-		//map2.put("pageSize", pxy.getPageSize());
 		return map2;
 	}
 	

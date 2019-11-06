@@ -17,6 +17,7 @@ public class ProxyMap {
 			map.put(x.get(i), y.get(i));
 		}
 		map.forEach((k,v)-> System.out.printf("%s : %s \n",k,v));
+		
 	}
 	public HashMap<String, Object> get(){
 		return map;

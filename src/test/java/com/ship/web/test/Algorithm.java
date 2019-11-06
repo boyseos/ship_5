@@ -1,5 +1,7 @@
 package com.ship.web.test;
 
+import com.ship.web.pxy.Proxy;
+
 public class Algorithm {
 	public static void main(String[] args) {
 		int	pageSize=5, blockSize=5, pageNum=7,totalCount=137,
@@ -25,5 +27,9 @@ public class Algorithm {
 				"endPage = %d\n"
 				,totalCount,pageSize,pageNum,pageCount,blockCount,blockNum,startRow,endRow,startPage,endPage
 				);
+		Proxy pxy = new Proxy();
+		
+		System.out.println(pxy.ran(10, 10000));
+		
 	}
 }
