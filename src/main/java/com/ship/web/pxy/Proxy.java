@@ -26,7 +26,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Proxy {
-	private int startRow, pageSize, pageNum, pageCount, endRow;
+	private int startRow, pageSize, pageNum, endRow;
+	private boolean existPrev,existNext;
 	private List<Integer> pageArr;
 	private List<Article> listArr;
 	private String search;
@@ -35,7 +36,7 @@ public class Proxy {
 	
 	public void paging() {
 		ISupplier<Integer> s = () -> articleMapper.allBoardCount();//이미 시작될때 실행된 결과값을 가져온다. 그래서 뉴때리면 없어진다..?
-		int totalCount = s.get(),blockCount=0,blockNum=0,startPage=0,endPage=0;
+		int totalCount = s.get(),blockCount=0,blockNum=0,startPage=0,endPage=0,pageCount=0;
 		blockCount = (totalCount-1)/(pageSize*BLOCK_SIZE)+1;
 		pageCount = (totalCount-1) / pageSize +1;
 		pageNum = (pageCount < pageNum) ? pageCount :
@@ -47,8 +48,8 @@ public class Proxy {
 		//endPage = ((blockNum+1) != blockCount) ? startPage + (BLOCK_SIZE-1) : pageCount;
 		endPage = (blockNum+1) * BLOCK_SIZE;
 		endPage = endPage > pageCount ? pageCount : endPage;
-		boolean existPrev = blockNum == 0;
-		boolean existNext = blockNum == blockCount -1;
+		existPrev = blockNum == 0;
+		existNext = blockNum == blockCount -1;
 		List<Integer> x = new ArrayList<>();
 		for(int i = endPage; startPage<= i; i--) {
 			x.add(i);

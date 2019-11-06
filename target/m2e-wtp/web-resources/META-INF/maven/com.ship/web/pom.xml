@@ -31,6 +31,7 @@
 		<jackson-version>2.9.8</jackson-version>
 		<hikari-verion>3.4.1</hikari-verion>
 		<jsoup-version>1.12.1</jsoup-version>
+		<json-version>1.1</json-version>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
@@ -204,6 +205,11 @@
 		    <groupId>org.jsoup</groupId>
 		    <artifactId>jsoup</artifactId>
 		    <version>${jsoup-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>${json-version}</version>
 		</dependency>
 		<!-- Test -->
 		<dependency>

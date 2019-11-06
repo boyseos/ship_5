@@ -38,7 +38,7 @@ navi =(()=>{
 	}
 	
 	let setContentView = () =>{
-		$('body').html(navi_vue.navi)
+		$('body').html(navi_vue.navi())
 	}
 	
 	let loginMenu = () =>{

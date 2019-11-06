@@ -42,7 +42,6 @@ service = (() =>{
 	
 	let recent_update = (x) => {
 		$('head').html(service_vue.service_head)
-		//$('body div[class=nav-scroller bg-white box-shadow]').remove()
 		$('#main').remove()
 		$('body').append(service_vue.service_body)
 		$('#recent_update .media').remove()
@@ -66,39 +65,38 @@ service = (() =>{
 			})
 			$(page_vue.page_nation()).appendTo('#recent_update')
 			$.each([
-				{tag : '<li id="prev" class="page-item"><a class="page-link" href="#">Prev</a></li>', pageNum : -5, pageSize : d.pxy.pageSize},
-				{tag : '<li class="page-item"><a class="page-link" href="#">Next</a></li>', pageNum : +5, pageSize : d.pxy.pageSize}
+				{tag : '<li id="prev" class="page-item"><a class="page-link" href="#">Prev</a></li>', pageNum : -5, pageSize : d.pxy.pageSize, predicate : d.pxy.existPrev},
+				{tag : '<li class="page-item"><a class="page-link" href="#">Next</a></li>', pageNum : +5, pageSize : d.pxy.pageSize, predicate : d.pxy.existNext}
 				//{tag : '<input type="submit" value="SUBMIT"/>', pageNum : 0, pageSize : $('#listSizeSelectDiv select').val()}
 				]
 				,(i,j)=>{
-				$(j.tag)
-				.appendTo('#pagenation')
-				.click(()=>{
-					alert(j.pageSize)
-					recent_update({pxy : {pageNum : Math.floor(x.pxy.pageNum)+j.pageNum, pageSize : j.pageSize}})
-				})
-			})
-			$('<input type="submit" value="SUBMIT"/>')
-				.appendTo('#pagenation')
-				.click(()=>{
-					recent_update({pxy : {pageNum : Math.floor(x.pxy.pageNum), pageSize : $('#listSizeSelectDiv select').val()}})
+					//if(j.predicate){
+						$(j.tag)
+						.appendTo('#pagenation')
+						.click(()=>{
+							recent_update({pxy : {pageNum : Math.floor(d.pxy.pageNum)+j.pageNum, pageSize : j.pageSize}})		
+						})
+					//}
 				})
 			$.each(d.pxy.pageArr,(i,j)=>{//페이지네이션 1,2,3,4,5 추가
 				$('<li class="page-item"><a class="page-link" href="#">'+j+'</a></li>')
-				/*.appendTo('#pagenation')*/
 				.insertAfter('#prev')
 				.click(()=>{
 					alert(j)
 					recent_update({pxy : {pageNum : j, pageSize : d.pxy.pageSize}})
-				})//json으로 바꿔보자.
+				})
 			})
 			
 			$(compo_vue.page_size()).appendTo('#pagenation')
 			$.each([5,10,15],(i,j)=>{//셀렉트 추가
-				$('<option value="'+j+'">'+j+'</option>')
+				$('<option value="'+j+'">'+j+'개 보기</option>')
 				.appendTo('#listSizeSelectDiv select[name=site]')
 			})
-			$('#listSizeSelectDiv select').val(d.pxy.pageSize)
+			$('#listSizeSelectDiv select option[value="'+d.pxy.pageSize+'"]').attr('selected', true)
+			//$('#listSizeSelectDiv select').val(d.pxy.pageSize)
+			$('#listSizeSelectDiv select').change(()=>{
+				recent_update({pxy : {pageNum : Math.floor(d.pxy.pageNum), pageSize : $('#listSizeSelectDiv select').val()}})
+			})
 		})
 	}
 	
@@ -146,9 +144,6 @@ service = (() =>{
 		.click(()=>{
 		})
 	}
-	/*+' <input type="reset"  value="CANCEL"/>'
-	  +'<input name="write" type="submit" value="SUBMIT"/>'*/
-	
 
 	let detail = x => {
 		$('#recent_update').html(service_vue.service_write(x))

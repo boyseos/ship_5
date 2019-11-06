@@ -67,6 +67,7 @@ public class ArticleCtrl {
 		Map<String,Object> map2 = new HashMap<String, Object>();
 		map2.clear();
 		map2.put("pxy", pxy);
+		//map3.accept(Arrays.asList({"pxy"}),Arrays.asList({}));
 		return map2;
 	}
 	
