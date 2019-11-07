@@ -11,13 +11,11 @@ import com.mysql.cj.xdevapi.JsonParser;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.io.BufferedReader;
 import java.io.IOException;
 
 public class Crawler {
 	public static void main(String[] args) throws IOException {
-		String url = "https://map.naver.com/v5/api/search?caller=pcweb&query=풋살장&type=all&page=1&displayCount=100&lang=ko";
+		String url = "https://map.naver.com/v5/api/search?caller=pcweb&query=풋살장&type=all&page=2&displayCount=100&lang=ko";
 		Document rawData = Jsoup.connect(url).timeout(10*1000)
 				.ignoreContentType(true)
 				.get();
@@ -30,16 +28,41 @@ public class Crawler {
 		//JSONParser jsonParse = new JSONParser();
 		//System.out.println(rawData.attr("name","name"));
 		JsonParser jsonParser = new JsonParser();
-		String patern = "name : .*?";
-		String input = rawData.text();
-		System.out.println(input);
-		Pattern ptn = Pattern.compile("^[a-zA-Z]+([0-9]+).*"); 
-		Matcher matcher = ptn.matcher(input);
-		System.out.println(matcher.groupCount());
-		while(matcher.find()){
-			System.out.println(matcher.toString()); 
-		}
+		String input = rawData.text(),result="",ptnS=""; 
+		List<String> x = new ArrayList<>(),result1 = x, result2 = x, result3 = x, result4 = x;
+		int cut = 0;
 		
+		ptnS = "\"name\":\"(.*?)\"";
+		cut = 7; 
+		result1 = matching(input,ptnS,cut);
 		
+		ptnS = "\"address\":\"(.*?)\"";
+		cut = 10; 
+		result2 = matching(input,ptnS,cut);
+		
+		ptnS = "\"tel\":\"(.*?)\"";
+		cut = 6; 
+		result3 = matching(input,ptnS,cut);
+		
+		ptnS = "\"abbrAddress\":\"(.*?)\"";
+		cut = 2; 
+		result4 = matching(input,ptnS,cut);
+
+		for(int i= 0; i < result1.size();i++)
+			System.out.printf("%s  %s  %s  %s\n"
+						,result1.get(i)
+						,result2.get(i)
+						,result3.get(i)
+						,result4.get(i));
 	}
+	public static List<String> matching(String input, String ptnS, int cut){
+		List<String> x = new ArrayList<>();
+		Pattern ptn = Pattern.compile(ptnS);
+		Matcher matcher = ptn.matcher(input);
+		while(matcher.find()){
+			x.add(matcher.group().substring(cut).replace("\"","")); 
+		}
+		return x;
+	}
+	
 }

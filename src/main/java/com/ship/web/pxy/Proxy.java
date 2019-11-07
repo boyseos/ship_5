@@ -1,6 +1,7 @@
 package com.ship.web.pxy;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -26,7 +27,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Proxy {
-	private int startRow, pageSize, pageNum, endRow;
+	private int startRow, pageSize, pageNum, endRow, nextBlock, prevBlock,startPage,endPage;
 	private boolean existPrev,existNext;
 	private List<Integer> pageArr;
 	private List<Article> listArr;
@@ -36,7 +37,7 @@ public class Proxy {
 	
 	public void paging() {
 		ISupplier<Integer> s = () -> articleMapper.allBoardCount();//이미 시작될때 실행된 결과값을 가져온다. 그래서 뉴때리면 없어진다..?
-		int totalCount = s.get(),blockCount=0,blockNum=0,startPage=0,endPage=0,pageCount=0;
+		int totalCount = s.get(),blockCount=0,blockNum=0,pageCount=0;
 		blockCount = (totalCount-1)/(pageSize*BLOCK_SIZE)+1;
 		pageCount = (totalCount-1) / pageSize +1;
 		pageNum = (pageCount < pageNum) ? pageCount :
@@ -50,11 +51,17 @@ public class Proxy {
 		endPage = endPage > pageCount ? pageCount : endPage;
 		existPrev = blockNum == 0;
 		existNext = blockNum == blockCount -1;
-		List<Integer> x = new ArrayList<>();
+		pageArr = new ArrayList<>();
 		for(int i = endPage; startPage<= i; i--) {
-			x.add(i);
+			pageArr.add(i);
 		}
-		pageArr = x;
+		/*pageArr = Arrays.asList(endPage
+							,endPage-1
+							,endPage-2
+							,endPage-3
+							,endPage-4);*/
+		prevBlock = startPage - BLOCK_SIZE;
+		nextBlock = startPage + BLOCK_SIZE;
 	}
 	
 	public int parseInt(String param) {
